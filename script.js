@@ -15,13 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = extract;
 
-            // Extract paragraphs and add them as list items
-            const paragraphs = tempDiv.querySelectorAll('p');
-            paragraphs.forEach(paragraph => {
+            // Extract paragraphs
+            const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
+
+            // Shuffle paragraphs to display them in random order
+            shuffleArray(paragraphs);
+
+            // Limit the number of facts displayed
+            const numberOfFacts = Math.min(paragraphs.length, 3); // Display up to 3 random facts
+
+            for (let i = 0; i < numberOfFacts; i++) {
                 const listItem = document.createElement('li');
-                listItem.textContent = paragraph.textContent;
+                listItem.textContent = paragraphs[i].textContent;
                 factsList.appendChild(listItem);
-            });
+            }
         })
         .catch(error => {
             console.error('Error fetching facts:', error);
@@ -30,3 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
             factsList.appendChild(errorMessage);
         });
 });
+
+// Function to shuffle an array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
